@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sol.mapper.EmployeeMapper">
+<resultMap id="employeeMap" type="employee">
+	<id property="id" column="id"/>
+	<result property="realname" column="real_name"/>
+	<result property="sex" column="sex" typeHandler="com.sol.pojo.SexEnumHandler"/>
+	<result property="birthday" column="birthday"/>
+	<result property="mobile" column="mobile"/>
+	<result property="position" column="position"/>
+	<result property="note" column="note"/>
+  <association property="workCard" column="id" 
+  select="com.sol.mapper.WorkCardMapper.getWorkCardByEmpId"/>
+   <collection property="TaskList" column="id"
+  select="com.sol.mapper.EmployeeTaskMapper.getTaskByempId"/>
+  <discriminator javaType="SexEnum" column="sex" typeHandler="com.sol.pojo.SexEnumHandler">
+  <case value="Male" resultType="employee">
+  <association property="healthForm" column="id" select="com.sol.mapper.MaleMapper.getElementById"/>
+   </case> 
+   <case value="Female" resultType="employee">
+   <association  property="healthForm" column="id" select="com.sol.mapper.FemaleMapper.getElementById"/>
+   </case>
+   </discriminator>
+</resultMap>
+
+<select id="getEmployeeById"  resultMap="employeeMap">
+  SELECT * FROM t_employee WHERE ID = #{id}
+</select>
+
+</mapper>

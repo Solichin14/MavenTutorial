@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sol.mapper.WorkCardMapper">
+<resultMap id="workCardMap" type="workcard">
+	<id property="id" column="id"/>
+	<result property="realName" column="real_name"/>
+	<result property="empId" column="emp_id"/>
+	<result property="department" column="department"/>
+	<result property="mobile" column="mobile"/>
+	<result property="position" column="position"/>
+	<result property="note" column="note"/>
+	<association property="WorkCard" column="id" select="com.sol.WorkCardMapper.getWorkCardByEmpId"/>
+</resultMap>
+<select id="getWorkCardByEmpId" resultMap="workCardMap">
+  SELECT * FROM t_work_card WHERE emp_id = #{empId}
+</select>
+
+
+</mapper>
